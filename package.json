@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build": "npm run vercel-build",
-    "vercel-build": "expo export -p web"
+    "vercel-build": "node node_modules/expo/bin/cli export -p web"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
