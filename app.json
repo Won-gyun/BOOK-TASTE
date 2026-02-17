@@ -1,0 +1,66 @@
+{
+  "expo": {
+    "name": "책음미하기",
+    "slug": "book-savor-app",
+    "scheme": "book-savor-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#f8fafc"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.booksavor.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "ISBN 바코드 스캔 및 문장 촬영을 위해 카메라 접근이 필요합니다.",
+        "NSMicrophoneUsageDescription": "낭독 녹음을 위해 마이크 접근이 필요합니다.",
+        "NSPhotoLibraryUsageDescription": "도서 표지 이미지를 선택하기 위해 사진 라이브러리 접근이 필요합니다."
+      }
+    },
+    "android": {
+      "package": "com.booksavor.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#f8fafc"
+      },
+      "edgeToEdgeEnabled": false,
+      "permissions": [
+        "CAMERA",
+        "RECORD_AUDIO",
+        "READ_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-sqlite",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "ISBN 바코드 스캔 및 문장 촬영을 위해 카메라 접근이 필요합니다."
+        }
+      ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": "낭독 녹음을 위해 마이크 접근이 필요합니다."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "도서 표지 이미지를 선택하기 위해 사진 라이브러리 접근이 필요합니다."
+        }
+      ],
+      "expo-web-browser"
+    ]
+  }
+}
