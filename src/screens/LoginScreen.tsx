@@ -50,9 +50,10 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     setLoading(true);
     setError('');
     try {
-      await signInWithGoogle(idToken);
+      await signInWithGoogle();
     } catch (e: any) {
-      setError(getErrorMessage(e.code));
+      console.error(e);
+      setError(e.message || '로그인에 실패했습니다.');
     }
     setLoading(false);
   };
@@ -67,7 +68,12 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     try {
       await signIn(email.trim(), password);
     } catch (e: any) {
-      setError(getErrorMessage(e.code));
+      console.error(e);
+      if (e.message === 'Invalid login credentials') {
+        setError('이메일 또는 비밀번호가 올바르지 않습니다.\n(이메일 인증이 완료되었는지 확인해주세요)');
+      } else {
+        setError(e.message || '로그인에 실패했습니다.');
+      }
     }
     setLoading(false);
   };
@@ -173,24 +179,6 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   );
 }
 
-/** Firebase Auth 에러 코드를 한국어 메시지로 변환 */
-function getErrorMessage(code: string): string {
-  switch (code) {
-    case 'auth/invalid-email':
-      return '올바른 이메일 형식이 아닙니다.';
-    case 'auth/user-not-found':
-      return '등록되지 않은 이메일입니다.';
-    case 'auth/wrong-password':
-      return '비밀번호가 올바르지 않습니다.';
-    case 'auth/too-many-requests':
-      return '로그인 시도가 너무 많습니다. 잠시 후 다시 시도해주세요.';
-    case 'auth/invalid-credential':
-      return '이메일 또는 비밀번호가 올바르지 않습니다.';
-    default:
-      return '로그인에 실패했습니다. 다시 시도해주세요.';
-  }
-}
-
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
   scrollContent: {
@@ -240,6 +228,7 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.sm,
     marginBottom: spacing.lg,
     gap: spacing.sm,
+    // marginBottom: spacing.lg, // Duplicate removed
   },
   errorText: {
     flex: 1,

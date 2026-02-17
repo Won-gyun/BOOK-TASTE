@@ -44,9 +44,17 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
     setLoading(true);
     setError('');
     try {
-      await signUp(email.trim(), password);
+      const { session } = await signUp(email.trim(), password);
+
+      if (!session) {
+        alert('회원가입 확인 메일을 발송했습니다. 이메일을 확인해주세요.\n(Supabase 대시보드에서 Email Confirm을 끌 수도 있습니다.)');
+      } else {
+        alert('회원가입이 완료되었습니다.');
+      }
+      navigation.goBack();
     } catch (e: any) {
-      setError(getErrorMessage(e.code));
+      console.error(e);
+      setError(e.message || '회원가입에 실패했습니다.');
     }
     setLoading(false);
   };
@@ -154,18 +162,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
 }
 
 /** Firebase Auth 에러 코드를 한국어 메시지로 변환 */
-function getErrorMessage(code: string): string {
-  switch (code) {
-    case 'auth/invalid-email':
-      return '올바른 이메일 형식이 아닙니다.';
-    case 'auth/email-already-in-use':
-      return '이미 사용 중인 이메일입니다.';
-    case 'auth/weak-password':
-      return '비밀번호가 너무 약합니다. 6자 이상 입력해주세요.';
-    default:
-      return '회원가입에 실패했습니다. 다시 시도해주세요.';
-  }
-}
+
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: colors.background },
