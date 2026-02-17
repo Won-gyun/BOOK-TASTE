@@ -7,7 +7,6 @@ import { PaperProvider, Text } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native';
 import { AuthProvider } from './src/contexts/AuthContext';
-import { DatabaseProvider } from './src/contexts/DatabaseContext'; // 1. Provider 임포트 확인
 import AppNavigator from './src/navigation/AppNavigator';
 
 // Simple Error Boundary
@@ -45,11 +44,8 @@ export default function App() {
       <ErrorBoundary>
         <PaperProvider>
           <AuthProvider>
-            {/* 2. DatabaseProvider로 AppNavigator를 감싸줍니다. */}
-            <DatabaseProvider>
-              <StatusBar style="dark" />
-              <AppNavigator />
-            </DatabaseProvider>
+            <StatusBar style="dark" />
+            <AppNavigator />
           </AuthProvider>
         </PaperProvider>
       </ErrorBoundary>
