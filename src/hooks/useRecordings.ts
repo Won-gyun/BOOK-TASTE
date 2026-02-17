@@ -67,4 +67,55 @@ export function useRecordings(bookId?: number) {
           {
             bookId: targetBookId,
             sentenceId: sentenceId,
-            ti
+            title,
+            fileUri: publicUrl, // 로컬 URI 대신 Remote URL 저장
+            duration
+          }
+        ]);
+
+      if (dbError) throw dbError;
+
+      await refresh();
+    } catch (error) {
+      console.error('Error adding recording:', error);
+      alert('녹음 저장 중 오류가 발생했습니다.');
+    }
+  }, [refresh]);
+
+  /** 녹음 삭제 (파일도 같이 삭제) */
+  const deleteRecording = useCallback(async (id: number) => {
+    try {
+      // 1. 레코드 조회 (파일 경로 확인용)
+      const { data: rec, error: fetchError } = await supabase
+        .from('recordings')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (fetchError || !rec) throw fetchError || new Error('Recording not found');
+
+      // 2. Storage에서 파일 삭제
+      // fileUri가 Supabase URL이라면 경로 추출
+      // 예: https://..../storage/v1/object/public/recordings/recordings/123.m4a
+      const urlParts = rec.fileUri.split('/recordings/');
+      if (urlParts.length > 1) {
+        const path = 'recordings/' + urlParts[urlParts.length - 1]; // 간단한 파싱
+        await supabase.storage.from('recordings').remove([path]);
+      }
+
+      // 3. DB에서 삭제
+      const { error: deleteError } = await supabase
+        .from('recordings')
+        .delete()
+        .eq('id', id);
+
+      if (deleteError) throw deleteError;
+
+      await refresh();
+    } catch (error) {
+      console.error('Error deleting recording:', error);
+    }
+  }, [refresh]);
+
+  return { recordings, loading, refresh, addRecording, deleteRecording };
+}

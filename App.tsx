@@ -15,10 +15,9 @@ export default function App() {
     <SafeAreaProvider>
       <PaperProvider>
         <AuthProvider>
-          <DatabaseProvider>
-            <StatusBar style="dark" />
-            <AppNavigator />
-          </DatabaseProvider>
+          <StatusBar style="dark" />
+          <AppNavigator />
+
         </AuthProvider>
       </PaperProvider>
     </SafeAreaProvider>
