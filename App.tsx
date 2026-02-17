@@ -1,13 +1,13 @@
 // ============================================================
-// 책음미하기 - 메인 엔트리 포인트
-// Expo 기반 서버리스 독서 기록 및 낭독 앱
+// 책음미하기 - 메인 엔트리 포인트 (수정본)
 // ============================================================
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { PaperProvider, Text } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { AuthProvider } from './src/contexts/AuthContext';
+import { DatabaseProvider } from './src/contexts/DatabaseContext'; // 1. Provider 임포트 확인
 import AppNavigator from './src/navigation/AppNavigator';
 
 // Simple Error Boundary
@@ -45,8 +45,11 @@ export default function App() {
       <ErrorBoundary>
         <PaperProvider>
           <AuthProvider>
-            <StatusBar style="dark" />
-            <AppNavigator />
+            {/* 2. DatabaseProvider로 AppNavigator를 감싸줍니다. */}
+            <DatabaseProvider>
+              <StatusBar style="dark" />
+              <AppNavigator />
+            </DatabaseProvider>
           </AuthProvider>
         </PaperProvider>
       </ErrorBoundary>
