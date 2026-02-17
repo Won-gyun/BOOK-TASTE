@@ -57,3 +57,5 @@ const styles = StyleSheet.create({
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 },
   errorTitle: { marginBottom: 10, color: '#ef4444' }
 });
+
+//dummy
